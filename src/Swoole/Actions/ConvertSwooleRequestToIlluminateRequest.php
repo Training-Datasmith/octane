@@ -32,7 +32,7 @@ class ConvertSwooleRequestToIlluminateRequest
         );
 
         if (str_starts_with((string) $request->headers->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded') &&
-            in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'PATCH', 'DELETE'])) {
+            in_array(strtoupper((string) $request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'PATCH', 'DELETE'])) {
             parse_str($request->getContent(), $data);
 
             $request->request = new InputBag($data);
@@ -49,7 +49,7 @@ class ConvertSwooleRequestToIlluminateRequest
         $results = [];
 
         foreach ($server as $key => $value) {
-            $results[strtoupper($key)] = $value;
+            $results[strtoupper((string) $key)] = $value;
         }
 
         $results = array_merge(
@@ -59,7 +59,7 @@ class ConvertSwooleRequestToIlluminateRequest
 
         if (isset($results['REQUEST_URI'], $results['QUERY_STRING']) &&
             strlen($results['QUERY_STRING']) > 0 &&
-            strpos($results['REQUEST_URI'], '?') === false) {
+            !str_contains($results['REQUEST_URI'], '?')) {
             $results['REQUEST_URI'] .= '?'.$results['QUERY_STRING'];
         }
 

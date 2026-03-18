@@ -11,10 +11,8 @@ trait InteractsWithEnvironmentVariables
 {
     /**
      * Forgets the current process environment variables.
-     *
-     * @return void
      */
-    public function forgetEnvironmentVariables()
+    public function forgetEnvironmentVariables(): void
     {
         $variables = collect();
 
@@ -28,7 +26,7 @@ trait InteractsWithEnvironmentVariables
             foreach ((new Parser())->parse($content) as $entry) {
                 $variables->push($entry->getName());
             }
-        } catch (InvalidPathException $e) {
+        } catch (InvalidPathException) {
             // ..
         }
 

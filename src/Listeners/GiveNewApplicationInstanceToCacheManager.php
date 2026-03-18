@@ -15,7 +15,7 @@ class GiveNewApplicationInstanceToCacheManager
             return;
         }
 
-        with($event->sandbox->make('cache'), function ($manager) use ($event) {
+        with($event->sandbox->make('cache'), function ($manager) use ($event): void {
             if (method_exists($manager, 'setApplication')) {
                 $manager->setApplication($event->sandbox);
             }

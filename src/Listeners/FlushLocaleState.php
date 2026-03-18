@@ -15,7 +15,7 @@ class FlushLocaleState
     {
         $config = $event->sandbox->make('config');
 
-        tap($event->sandbox->make('translator'), function ($translator) use ($config) {
+        tap($event->sandbox->make('translator'), function ($translator) use ($config): void {
             $translator->setLocale($config->get('app.locale'));
             $translator->setFallback($config->get('app.fallback_locale'));
         });

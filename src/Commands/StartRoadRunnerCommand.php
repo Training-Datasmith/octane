@@ -203,11 +203,11 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             ->explode("\n")
             ->filter()
             ->each(function ($output) {
-                if (! is_array($debug = json_decode($output, true))) {
+                if (! is_array($debug = json_decode((string) $output, true))) {
                     return $this->components->info($output);
                 }
 
-                if (is_array($stream = json_decode($debug['msg'], true))) {
+                if (is_array($stream = json_decode((string) $debug['msg'], true))) {
                     return $this->handleStream($stream);
                 }
 
@@ -238,7 +238,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
         Str::of($errorOutput)
             ->explode("\n")
             ->filter()
-            ->each(function ($output) {
+            ->each(function ($output): void {
                 if (! Str::contains($output, ['DEBUG', 'INFO', 'WARN'])) {
                     $this->components->error($output);
                 }

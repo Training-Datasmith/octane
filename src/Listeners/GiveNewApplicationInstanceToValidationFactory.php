@@ -15,7 +15,7 @@ class GiveNewApplicationInstanceToValidationFactory
             return;
         }
 
-        with($event->sandbox->make('validator'), function ($factory) use ($event) {
+        with($event->sandbox->make('validator'), function ($factory) use ($event): void {
             $factory->setContainer($event->sandbox);
         });
     }

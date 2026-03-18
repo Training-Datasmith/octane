@@ -15,10 +15,8 @@ class OnManagerStart
 
     /**
      * Handle the "managerstart" Swoole event.
-     *
-     * @return void
      */
-    public function __invoke()
+    public function __invoke(): void
     {
         if ($this->shouldSetProcessName) {
             $this->extension->setProcessName($this->appName, 'manager process');

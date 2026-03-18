@@ -17,7 +17,7 @@ trait InteractsWithServers
      * @param  string  $type
      * @return int
      */
-    protected function runServer($server, $inspector, $type)
+    protected function runServer($server, $inspector, $type): int|null
     {
         while (! $server->isStarted()) {
             sleep(1);
@@ -72,7 +72,7 @@ trait InteractsWithServers
         if (! $this->option('watch')) {
             return new class
             {
-                public function __call($method, $parameters)
+                public function __call(string $method, array $parameters)
                 {
                     return null;
                 }
@@ -113,10 +113,8 @@ trait InteractsWithServers
 
     /**
      * Retrieve the given server output and flush it.
-     *
-     * @return array
      */
-    protected function getServerOutput($server)
+    protected function getServerOutput($server): array
     {
         $output = [
             $server->getIncrementalOutput(),

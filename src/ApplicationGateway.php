@@ -29,11 +29,11 @@ class ApplicationGateway
 
         $this->dispatchEvent($this->sandbox, new RequestReceived($this->app, $this->sandbox, $request));
 
-        if (Octane::hasRouteFor($request->getMethod(), '/'.$request->path())) {
-            return Octane::invokeRoute($request, $request->getMethod(), '/'.$request->path());
+        if ((new Octane())->hasRouteFor($request->getMethod(), '/'.$request->path())) {
+            return (new Octane())->invokeRoute($request, $request->getMethod(), '/'.$request->path());
         }
 
-        return tap($this->sandbox->make(Kernel::class)->handle($request), function ($response) use ($request) {
+        return tap($this->sandbox->make(Kernel::class)->handle($request), function ($response) use ($request): void {
             $this->dispatchEvent($this->sandbox, new RequestHandled($this->sandbox, $request, $response));
         });
     }

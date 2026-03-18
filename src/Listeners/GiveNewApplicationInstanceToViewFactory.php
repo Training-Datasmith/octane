@@ -15,7 +15,7 @@ class GiveNewApplicationInstanceToViewFactory
             return;
         }
 
-        with($event->sandbox->make('view'), function ($view) use ($event) {
+        with($event->sandbox->make('view'), function ($view) use ($event): void {
             $view->setContainer($event->sandbox);
 
             $view->share('app', $event->sandbox);

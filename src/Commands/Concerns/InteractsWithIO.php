@@ -46,9 +46,8 @@ trait InteractsWithIO
      * Write a string as raw output.
      *
      * @param  string  $string
-     * @return void
      */
-    public function raw($string)
+    public function raw($string): void
     {
         if (! Str::startsWith($string, $this->ignoreMessages)) {
             $this->output instanceof OutputStyle
@@ -62,9 +61,8 @@ trait InteractsWithIO
      *
      * @param  string  $string
      * @param  int|string|null  $verbosity
-     * @return void
      */
-    public function info($string, $verbosity = null)
+    public function info($string, $verbosity = null): void
     {
         $this->label($string, $verbosity, 'INFO', 'blue', 'white');
     }
@@ -74,9 +72,8 @@ trait InteractsWithIO
      *
      * @param  string  $string
      * @param  int|string|null  $verbosity
-     * @return void
      */
-    public function error($string, $verbosity = null)
+    public function error($string, $verbosity = null): void
     {
         $this->label($string, $verbosity, 'ERROR', 'red', 'white');
     }
@@ -86,9 +83,8 @@ trait InteractsWithIO
      *
      * @param  string  $string
      * @param  int|string|null  $verbosity
-     * @return void
      */
-    public function warn($string, $verbosity = null)
+    public function warn($string, $verbosity = null): void
     {
         $this->label($string, $verbosity, 'WARN', 'yellow', 'black');
     }
@@ -101,9 +97,8 @@ trait InteractsWithIO
      * @param  string  $level
      * @param  string  $background
      * @param  string  $foreground
-     * @return void
      */
-    public function label($string, $verbosity, $level, $background, $foreground)
+    public function label($string, $verbosity, $level, $background, $foreground): void
     {
         if (! empty($string) && ! Str::startsWith($string, $this->ignoreMessages)) {
             $this->output->writeln([
@@ -116,15 +111,13 @@ trait InteractsWithIO
     /**
      * Write information about a request to the console.
      *
-     * @param  array  $request
      * @param  int|string|null  $verbosity
-     * @return void
      */
-    public function requestInfo($request, $verbosity = null)
+    public function requestInfo(array $request, $verbosity = null): void
     {
         $terminalWidth = $this->getTerminalWidth();
 
-        $url = parse_url($request['url'], PHP_URL_PATH) ?: '/';
+        $url = parse_url((string) $request['url'], PHP_URL_PATH) ?: '/';
         $duration = number_format(round($request['duration'], 2), 2, '.', '');
 
         $memory = isset($request['memory'])
@@ -162,24 +155,21 @@ trait InteractsWithIO
     /**
      * Write information about a dd to the console.
      *
-     * @param  array  $throwable
      * @param  int|string|null  $verbosity
-     * @return void
      */
-    public function ddInfo($throwable, $verbosity = null)
+    public function ddInfo(array $throwable, $verbosity = null): void
     {
-        collect(json_decode($throwable['message'], true))
+        collect(json_decode((string) $throwable['message'], true))
             ->each(fn ($var) => VarDumper::dump($var));
     }
 
     /**
      * Write information about a throwable to the console.
      *
-     * @param  array  $throwable
      * @param  int|string|null  $verbosity
      * @return void
      */
-    public function throwableInfo($throwable, $verbosity = null)
+    public function throwableInfo(array $throwable, $verbosity = null)
     {
         if ($throwable['class'] == DdException::class) {
             return $this->ddInfo($throwable, $verbosity);
@@ -190,7 +180,7 @@ trait InteractsWithIO
 
             $this->newLine();
 
-            $outputTrace = function ($trace, $number) {
+            $outputTrace = function (array $trace, $number): void {
                 $number++;
 
                 if (isset($trace['line'])) {
@@ -224,9 +214,8 @@ trait InteractsWithIO
      *
      * @param  array  $throwable
      * @param  int|string|null  $verbosity
-     * @return void
      */
-    public function shutdownInfo($throwable, $verbosity = null)
+    public function shutdownInfo($throwable, $verbosity = null): never
     {
         $this->throwableInfo($throwable, $verbosity);
 
@@ -236,11 +225,9 @@ trait InteractsWithIO
     /**
      * Handle stream information from the worker.
      *
-     * @param  array  $stream
      * @param  int|string|null  $verbosity
-     * @return void
      */
-    public function handleStream($stream, $verbosity = null)
+    public function handleStream(array $stream, $verbosity = null): void
     {
         match ($stream['type'] ?? null) {
             'request' => $this->requestInfo($stream, $verbosity),

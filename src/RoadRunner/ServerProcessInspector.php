@@ -50,7 +50,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
             '-o', 'version=3',
             '-o', "rpc.listen=tcp://$host:$rpcPort",
             '-s',
-        ], base_path()))->start()->waitUntil(function ($type, $buffer) {
+        ], base_path()))->start()->waitUntil(function ($type, string $buffer): bool {
             if ($type === Process::ERR) {
                 throw new RuntimeException('Cannot reload RoadRunner: '.$buffer);
             }

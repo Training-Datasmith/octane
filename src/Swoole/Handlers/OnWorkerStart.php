@@ -26,9 +26,8 @@ class OnWorkerStart
      * Handle the "workerstart" Swoole event.
      *
      * @param  \Swoole\Http\Server  $server
-     * @return void
      */
-    public function __invoke($server, int $workerId)
+    public function __invoke($server, int $workerId): void
     {
         if ($this->shouldClearOpcodeCache()) {
             $this->clearOpcodeCache();
@@ -95,7 +94,7 @@ class OnWorkerStart
      */
     protected function streamRequestsToConsole($server)
     {
-        $this->workerState->worker->onRequestHandled(function ($request, $response, $sandbox) {
+        $this->workerState->worker->onRequestHandled(function ($request, $response, $sandbox): void {
             if (! $sandbox->environment('local', 'testing')) {
                 return;
             }

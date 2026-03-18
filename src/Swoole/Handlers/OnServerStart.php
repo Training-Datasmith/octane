@@ -24,9 +24,8 @@ class OnServerStart
      * Handle the "start" Swoole event.
      *
      * @param  \Swoole\Http\Server  $server
-     * @return void
      */
-    public function __invoke($server)
+    public function __invoke($server): void
     {
         $this->serverStateFile->writeProcessIds(
             $server->master_pid,
@@ -38,13 +37,13 @@ class OnServerStart
         }
 
         if ($this->shouldTick) {
-            Timer::tick(1000, function () use ($server) {
+            Timer::tick(1000, function () use ($server): void {
                 $server->task('octane-tick');
             });
         }
 
         if ($this->maxExecutionTime > 0) {
-            Timer::tick(1000, function () use ($server) {
+            Timer::tick(1000, function () use ($server): void {
                 (new EnsureRequestsDontExceedMaxExecutionTime(
                     $this->extension, $this->timerTable, $this->maxExecutionTime, $server
                 ))();

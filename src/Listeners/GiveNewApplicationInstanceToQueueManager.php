@@ -15,7 +15,7 @@ class GiveNewApplicationInstanceToQueueManager
             return;
         }
 
-        with($event->sandbox->make('queue'), function ($manager) use ($event) {
+        with($event->sandbox->make('queue'), function ($manager) use ($event): void {
             $manager->setApplication($event->sandbox);
         });
     }

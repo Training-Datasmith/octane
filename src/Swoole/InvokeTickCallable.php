@@ -20,10 +20,8 @@ class InvokeTickCallable
 
     /**
      * Invoke the tick listener.
-     *
-     * @return void
      */
-    public function __invoke()
+    public function __invoke(): void
     {
         $lastInvokedAt = $this->cache->get('tick-'.$this->key);
 
@@ -50,7 +48,7 @@ class InvokeTickCallable
      *
      * @return $this
      */
-    public function seconds(int $seconds)
+    public function seconds(int $seconds): static
     {
         $this->seconds = $seconds;
 
@@ -62,7 +60,7 @@ class InvokeTickCallable
      *
      * @return $this
      */
-    public function immediate()
+    public function immediate(): static
     {
         $this->immediate = true;
 

@@ -32,11 +32,9 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
      */
     public function resolve(array $tasks, int $waitMilliseconds = 3000): array
     {
-        $tasks = collect($tasks)->mapWithKeys(function ($task, $key) {
-            return [$key => $task instanceof Closure
-                            ? new SerializableClosure($task)
-                            : $task, ];
-        })->all();
+        $tasks = collect($tasks)->mapWithKeys(fn($task, $key) => [$key => $task instanceof Closure
+                        ? new SerializableClosure($task)
+                        : $task, ])->all();
 
         try {
             $response = Http::timeout(($waitMilliseconds / 1000) + 5)->post("http://{$this->host}:{$this->port}/octane/resolve-tasks", [
@@ -61,11 +59,9 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
      */
     public function dispatch(array $tasks): void
     {
-        $tasks = collect($tasks)->mapWithKeys(function ($task, $key) {
-            return [$key => $task instanceof Closure
-                            ? new SerializableClosure($task)
-                            : $task, ];
-        })->all();
+        $tasks = collect($tasks)->mapWithKeys(fn($task, $key) => [$key => $task instanceof Closure
+                        ? new SerializableClosure($task)
+                        : $task, ])->all();
 
         try {
             Http::post("http://{$this->host}:{$this->port}/octane/dispatch-tasks", [

@@ -15,7 +15,7 @@ trait EnsuresColumnSizes
      */
     protected function ensureColumnsSize()
     {
-        return function ($value, $column) {
+        return function ($value, $column): void {
             if (! Arr::has($this->columns, $column)) {
                 return;
             }

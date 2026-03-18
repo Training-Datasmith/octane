@@ -20,7 +20,7 @@ class SequentialTaskDispatcher implements DispatchesTasks
     public function resolve(array $tasks, int $waitMilliseconds = 1): array
     {
         return collect($tasks)->mapWithKeys(
-            fn ($task, $key) => [$key => (function () use ($task) {
+            fn ($task, $key): array => [$key => (function () use ($task) {
                 try {
                     return $task();
                 } catch (Throwable $e) {
@@ -29,7 +29,7 @@ class SequentialTaskDispatcher implements DispatchesTasks
                     return TaskExceptionResult::from($e);
                 }
             })()]
-        )->each(function ($result) {
+        )->each(function ($result): void {
             if ($result instanceof TaskExceptionResult) {
                 throw $result->getOriginal();
             }

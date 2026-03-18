@@ -16,7 +16,7 @@ class ReportException
     public function handle($event): void
     {
         if ($event->exception) {
-            tap($event->sandbox, function ($sandbox) use ($event) {
+            tap($event->sandbox, function (array $sandbox) use ($event): void {
                 if ($event->exception instanceof DdException) {
                     return;
                 }

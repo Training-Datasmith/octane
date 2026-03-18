@@ -7,7 +7,7 @@ use Laravel\Octane\Worker;
 
 class FakeWorker extends Worker
 {
-    public function run()
+    public function run(): void
     {
         foreach ($this->client->requests as $request) {
             [$request, $context] = $this->client->marshalRequest(
@@ -20,7 +20,7 @@ class FakeWorker extends Worker
 
     public function runTasks()
     {
-        return collect($this->client->requests)->map(fn ($data) => $this->handleTask($data))->all();
+        return collect($this->client->requests)->map(fn ($data): mixed => $this->handleTask($data))->all();
     }
 
     public function runTicks()

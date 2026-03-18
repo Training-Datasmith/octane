@@ -18,10 +18,8 @@ class EnsureRequestsDontExceedMaxExecutionTime
 
     /**
      * Invoke the action.
-     *
-     * @return void
      */
-    public function __invoke()
+    public function __invoke(): void
     {
         $rows = [];
 

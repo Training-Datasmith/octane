@@ -32,10 +32,8 @@ class OctaneServiceProvider extends ServiceProvider
 {
     /**
      * Register Octane's services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/octane.php', 'octane');
 
@@ -43,62 +41,46 @@ class OctaneServiceProvider extends ServiceProvider
 
         $this->app->singleton('octane', Octane::class);
 
-        $this->app->bind(RoadRunnerServerProcessInspector::class, function ($app) {
-            return new RoadRunnerServerProcessInspector(
-                $app->make(RoadRunnerServerStateFile::class),
-                new SymfonyProcessFactory,
-                new PosixExtension,
-            );
-        });
+        $this->app->bind(RoadRunnerServerProcessInspector::class, fn($app) => new RoadRunnerServerProcessInspector(
+            $app->make(RoadRunnerServerStateFile::class),
+            new SymfonyProcessFactory,
+            new PosixExtension,
+        ));
 
-        $this->app->bind(RoadRunnerServerStateFile::class, function ($app) {
-            return new RoadRunnerServerStateFile($app['config']->get(
-                'octane.state_file',
-                storage_path('logs/octane-server-state.json')
-            ));
-        });
+        $this->app->bind(RoadRunnerServerStateFile::class, fn($app) => new RoadRunnerServerStateFile($app['config']->get(
+            'octane.state_file',
+            storage_path('logs/octane-server-state.json')
+        )));
 
-        $this->app->bind(SwooleServerProcessInspector::class, function ($app) {
-            return new SwooleServerProcessInspector(
-                $app->make(SignalDispatcher::class),
-                $app->make(SwooleServerStateFile::class),
-                $app->make(Exec::class),
-            );
-        });
+        $this->app->bind(SwooleServerProcessInspector::class, fn($app) => new SwooleServerProcessInspector(
+            $app->make(SignalDispatcher::class),
+            $app->make(SwooleServerStateFile::class),
+            $app->make(Exec::class),
+        ));
 
-        $this->app->bind(SwooleServerStateFile::class, function ($app) {
-            return new SwooleServerStateFile($app['config']->get(
-                'octane.state_file',
-                storage_path('logs/octane-server-state.json')
-            ));
-        });
+        $this->app->bind(SwooleServerStateFile::class, fn($app) => new SwooleServerStateFile($app['config']->get(
+            'octane.state_file',
+            storage_path('logs/octane-server-state.json')
+        )));
 
-        $this->app->bind(FrankenPhpServerProcessInspector::class, function ($app) {
-            return new FrankenPhpServerProcessInspector(
-                $app->make(FrankenPhpServerStateFile::class)
-            );
-        });
+        $this->app->bind(FrankenPhpServerProcessInspector::class, fn($app) => new FrankenPhpServerProcessInspector(
+            $app->make(FrankenPhpServerStateFile::class)
+        ));
 
-        $this->app->bind(FrankenPhpServerStateFile::class, function ($app) {
-            return new FrankenPhpServerStateFile($app['config']->get(
-                'octane.state_file',
-                storage_path('logs/octane-server-state.json')
-            ));
-        });
+        $this->app->bind(FrankenPhpServerStateFile::class, fn($app) => new FrankenPhpServerStateFile($app['config']->get(
+            'octane.state_file',
+            storage_path('logs/octane-server-state.json')
+        )));
 
-        $this->app->bind(DispatchesCoroutines::class, function ($app) {
-            return class_exists('Swoole\Http\Server')
-                        ? new SwooleCoroutineDispatcher($app->bound('Swoole\Http\Server'))
-                        : $app->make(SequentialCoroutineDispatcher::class);
-        });
+        $this->app->bind(DispatchesCoroutines::class, fn($app) => class_exists(\Swoole\Http\Server::class)
+                    ? new SwooleCoroutineDispatcher($app->bound(\Swoole\Http\Server::class))
+                    : $app->make(SequentialCoroutineDispatcher::class));
     }
 
     /**
      * Bootstrap Octane's services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $dispatcher = $this->app[Dispatcher::class];
 
@@ -206,7 +188,7 @@ class OctaneServiceProvider extends ServiceProvider
      */
     protected function registerHttpTaskHandlingRoutes()
     {
-        OctaneFacade::route('POST', '/octane/resolve-tasks', function (Request $request) {
+        (new OctaneFacade())->route('POST', '/octane/resolve-tasks', function (Request $request): \Illuminate\Http\Response {
             try {
                 return new Response(serialize((new SwooleTaskDispatcher)->resolve(
                     unserialize(Crypt::decryptString($request->input('tasks'))),
@@ -221,7 +203,7 @@ class OctaneServiceProvider extends ServiceProvider
             }
         });
 
-        OctaneFacade::route('POST', '/octane/dispatch-tasks', function (Request $request) {
+        (new OctaneFacade())->route('POST', '/octane/dispatch-tasks', function (Request $request): \Illuminate\Http\Response {
             try {
                 (new SwooleTaskDispatcher)->dispatch(
                     unserialize(Crypt::decryptString($request->input('tasks'))),

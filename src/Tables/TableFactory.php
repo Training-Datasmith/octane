@@ -9,7 +9,7 @@ class TableFactory
      *
      * @return \Swoole\Table
      */
-    public static function make($size)
+    public static function make($size): \Laravel\Octane\Tables\OpenSwooleTable|\Laravel\Octane\Tables\SwooleTable
     {
         static::ensureDependenciesAreLoaded();
 

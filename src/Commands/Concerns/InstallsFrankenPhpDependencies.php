@@ -26,10 +26,8 @@ trait InstallsFrankenPhpDependencies
 
     /**
      * Ensure the FrankenPHP's Caddyfile and worker script are installed.
-     *
-     * @return void
      */
-    public function ensureFrankenPhpWorkerIsInstalled()
+    public function ensureFrankenPhpWorkerIsInstalled(): void
     {
         if (! file_exists(public_path('frankenphp-worker.php'))) {
             copy(__DIR__.'/../stubs/frankenphp-worker.php', public_path('frankenphp-worker.php'));
@@ -104,7 +102,7 @@ trait InstallsFrankenPhpDependencies
                 $githubProxyPrefix.$asset['browser_download_url'],
                 [
                     'sink' => $path,
-                    'progress' => function ($downloadTotal, $downloadedBytes) use (&$progressBar) {
+                    'progress' => function ($downloadTotal, $downloadedBytes) use (&$progressBar): void {
                         if ($downloadTotal === 0) {
                             return;
                         }
@@ -146,10 +144,8 @@ trait InstallsFrankenPhpDependencies
             ->run()
             ->getOutput();
 
-        $lineWithVersion = collect(explode("\n", $buildInfo))
-            ->first(function ($line) {
-                return str_starts_with($line, 'dep') && str_contains($line, 'github.com/dunglas/frankenphp');
-            });
+        $lineWithVersion = collect(explode("\n", (string) $buildInfo))
+            ->first(fn($line) => str_starts_with((string) $line, 'dep') && str_contains((string) $line, 'github.com/dunglas/frankenphp'));
 
         if ($lineWithVersion === null) {
             return $this->components->warn(
@@ -159,7 +155,7 @@ trait InstallsFrankenPhpDependencies
 
         $version = Str::of($lineWithVersion)->trim()->afterLast('v')->value();
 
-        if (preg_match('/\d+\.\d+\.\d+/', $version) !== 1) {
+        if (preg_match('/\d+\.\d+\.\d+/', (string) $version) !== 1) {
             return $this->components->warn(
                 'Unable to determine the current FrankenPHP binary version. Please report this issue: https://github.com/laravel/octane/issues/new.',
             );

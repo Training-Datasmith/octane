@@ -19,9 +19,8 @@ class TaskExceptionResult
      * Creates a new task exception result from the given throwable.
      *
      * @param  \Throwable  $throwable
-     * @return \Laravel\Octane\Exceptions\TaskExceptionResult
      */
-    public static function from($throwable)
+    public static function from($throwable): static
     {
         $fallbackTrace = str_starts_with($throwable->getFile(), ClosureStream::STREAM_PROTO.'://')
             ? collect($throwable->getTrace())->whereNotNull('file')->first()
@@ -32,16 +31,14 @@ class TaskExceptionResult
             $throwable->getMessage(),
             (int) $throwable->getCode(),
             $fallbackTrace['file'] ?? $throwable->getFile(),
-            $fallbackTrace['line'] ?? (int) $throwable->getLine(),
+            $fallbackTrace['line'] ?? $throwable->getLine(),
         );
     }
 
     /**
      * Gets the original throwable.
-     *
-     * @return \Laravel\Octane\Exceptions\TaskException|\Laravel\Octane\Exceptions\DdException
      */
-    public function getOriginal()
+    public function getOriginal(): \Laravel\Octane\Exceptions\DdException|\Laravel\Octane\Exceptions\TaskException
     {
         if ($this->class == DdException::class) {
             return new DdException(
@@ -52,9 +49,9 @@ class TaskExceptionResult
         return new TaskException(
             $this->class,
             $this->message,
-            (int) $this->code,
+            $this->code,
             $this->file,
-            (int) $this->line,
+            $this->line,
         );
     }
 }

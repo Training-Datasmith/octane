@@ -12,10 +12,8 @@ trait RegistersTickHandlers
 {
     /**
      * Register a callback to be called every N seconds.
-     *
-     * @return \Laravel\Octane\Swoole\InvokeTickCallable
      */
-    public function tick(string $key, callable $callback, int $seconds = 1, bool $immediate = true)
+    public function tick(string $key, callable $callback, int $seconds = 1, bool $immediate = true): \Laravel\Octane\Swoole\InvokeTickCallable
     {
         $listener = new InvokeTickCallable(
             $key,

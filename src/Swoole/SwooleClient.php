@@ -88,10 +88,8 @@ class SwooleClient implements Client, ServesStaticFiles
 
     /**
      * If the given public file is within a symlinked directory, return the path after the symlink.
-     *
-     * @return string|bool
      */
-    private function pathAfterSymlink(string $publicPath, string $path)
+    private function pathAfterSymlink(string $publicPath, string $path): string|false
     {
         $directories = explode('/', $path);
 
@@ -231,7 +229,7 @@ class SwooleClient implements Client, ServesStaticFiles
         }
 
         if ($octaneResponse->response instanceof StreamedResponse) {
-            ob_start(function ($data) use ($swooleResponse) {
+            ob_start(function ($data) use ($swooleResponse): string {
                 if (strlen($data) > 0) {
                     $swooleResponse->write($data);
                 }

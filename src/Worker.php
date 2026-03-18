@@ -123,9 +123,8 @@ class Worker implements WorkerContract
      * Handle an incoming task.
      *
      * @param  mixed  $data
-     * @return mixed
      */
-    public function handleTask($data)
+    public function handleTask($data): \Laravel\Octane\Exceptions\TaskExceptionResult|\Laravel\Octane\Swoole\TaskResult
     {
         $result = false;
 
@@ -215,7 +214,7 @@ class Worker implements WorkerContract
      *
      * @return $this
      */
-    public function onRequestHandled(Closure $callback)
+    public function onRequestHandled(Closure $callback): static
     {
         $this->requestHandledCallbacks[] = $callback;
 

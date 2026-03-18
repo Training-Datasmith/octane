@@ -21,10 +21,8 @@ class OctaneArrayStore extends ArrayStore
 
     /**
      * Refresh all of the applicable interval caches.
-     *
-     * @return void
      */
-    public function refreshIntervalCaches()
+    public function refreshIntervalCaches(): void
     {
         //
     }

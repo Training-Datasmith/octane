@@ -18,7 +18,7 @@ class CloseMonologHandlers
         collect($event->app->make('log')->getChannels())
             ->map
             ->getLogger()
-            ->filter(fn ($logger) => method_exists($logger, 'close'))
+            ->filter(fn ($logger): bool => method_exists($logger, 'close'))
             ->each
             ->close();
     }

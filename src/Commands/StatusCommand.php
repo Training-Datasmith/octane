@@ -40,7 +40,7 @@ class StatusCommand extends Command
             default => $this->invalidServer($server),
         };
 
-        return ! tap($isRunning, function ($isRunning) {
+        return ! tap($isRunning, function ($isRunning): void {
             $isRunning
                 ? $this->components->info('Octane server is running.')
                 : $this->components->info('Octane server is not running.');

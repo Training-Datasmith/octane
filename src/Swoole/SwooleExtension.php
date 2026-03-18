@@ -14,7 +14,7 @@ class SwooleExtension
         protected ?Closure $isReadable = null,
         protected ?Closure $fileGetContents = null,
     ) {
-        $this->isReadable ??= static fn (string $path): bool => is_readable($path);
+        $this->isReadable ??= is_readable(...);
         $this->fileGetContents ??= static fn (string $path): string|false => @file_get_contents($path);
     }
 
@@ -80,7 +80,7 @@ class SwooleExtension
             $cpuMax = ($this->fileGetContents)('/sys/fs/cgroup/cpu.max');
 
             if ($cpuMax !== false) {
-                $parts = preg_split('/\s+/', trim($cpuMax));
+                $parts = preg_split('/\s+/', trim((string) $cpuMax));
                 $quota = $parts[0] ?? null;
                 $period = isset($parts[1]) ? (int) $parts[1] : 0;
 
@@ -99,8 +99,8 @@ class SwooleExtension
             $period = ($this->fileGetContents)($periodFile);
 
             if ($quota !== false && $period !== false) {
-                $quota = (int) trim($quota);
-                $period = (int) trim($period);
+                $quota = (int) trim((string) $quota);
+                $period = (int) trim((string) $period);
 
                 if ($quota > 0 && $period > 0) {
                     return (int) max(1, ceil($quota / $period));

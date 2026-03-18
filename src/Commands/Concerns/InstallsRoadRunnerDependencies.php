@@ -27,20 +27,16 @@ trait InstallsRoadRunnerDependencies
 
     /**
      * Determine if RoadRunner is installed.
-     *
-     * @return bool
      */
-    protected function isRoadRunnerInstalled()
+    protected function isRoadRunnerInstalled(): bool
     {
         return class_exists(PSR7Worker::class);
     }
 
     /**
      * Ensure the RoadRunner package is installed into the project.
-     *
-     * @return bool
      */
-    protected function ensureRoadRunnerPackageIsInstalled()
+    protected function ensureRoadRunnerPackageIsInstalled(): bool
     {
         if ($this->isRoadRunnerInstalled()) {
             return true;
@@ -65,7 +61,7 @@ trait InstallsRoadRunnerDependencies
         }
 
         try {
-            $process->run(function ($type, $line) {
+            $process->run(function ($type, $line): void {
                 $this->output->write($line);
             });
         } catch (ProcessSignaledException $e) {
@@ -79,10 +75,8 @@ trait InstallsRoadRunnerDependencies
 
     /**
      * Get the composer command for the environment.
-     *
-     * @return string
      */
-    protected function findComposer()
+    protected function findComposer(): string
     {
         $composerPath = getcwd().'/composer.phar';
 
@@ -131,7 +125,7 @@ trait InstallsRoadRunnerDependencies
             );
         }
 
-        $version = explode(' ', $version)[2];
+        $version = explode(' ', (string) $version)[2];
 
         if (version_compare($version, $this->requiredRoadRunnerVersion, '>=')) {
             return;
@@ -171,7 +165,7 @@ trait InstallsRoadRunnerDependencies
             'get-binary',
             '-n',
             '--ansi',
-        ]), base_path(), null, null, null))->mustRun(function (string $type, string $buffer) use (&$installed) {
+        ]), base_path(), null, null, null))->mustRun(function (string $type, string $buffer) use (&$installed): void {
             if (! $installed) {
                 $this->output->write($buffer);
 

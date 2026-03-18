@@ -23,23 +23,23 @@ class RequestContext implements ArrayAccess
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->data[$offset] = $value;
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->data[$offset]);
     }
 
-    public function __get($key)
+    public function __get(string $key): mixed
     {
         return $this->data[$key];
     }
 
-    public function __set($key, $value)
+    public function __set(string $key, mixed $value)
     {
         $this->data[$key] = $value;
     }

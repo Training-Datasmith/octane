@@ -201,7 +201,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
     {
         return new class
         {
-            public function __call($method, $parameters)
+            public function __call(string $method, array $parameters)
             {
                 return null;
             }
@@ -224,7 +224,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
             return "\t\twatch";
         }
 
-        return collect($paths)->map(fn ($path) => "\t\twatch ".base_path($path))->join("\n");
+        return collect($paths)->map(fn ($path): string => "\t\twatch ".base_path($path))->join("\n");
     }
 
     /**
@@ -270,7 +270,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
 
         $defaultPort = 2019;
 
-        return tap($defaultPort + ($this->getPort() - 8000), function ($adminPort) {
+        return tap($defaultPort + ($this->getPort() - 8000), function ($adminPort): void {
             if ($adminPort < 0) {
                 throw new InvalidArgumentException(
                     'Unable to determine admin port. Please specify the [--admin-port] option.',

@@ -19,11 +19,11 @@ class SwooleCoroutineDispatcher implements DispatchesCoroutines
     {
         $results = [];
 
-        $callback = function () use (&$results, $coroutines, $waitSeconds) {
+        $callback = function () use (&$results, $coroutines, $waitSeconds): void {
             $waitGroup = new WaitGroup;
 
             foreach ($coroutines as $key => $callback) {
-                Coroutine::create(function () use ($key, $callback, $waitGroup, &$results) {
+                Coroutine::create(function () use ($key, $callback, $waitGroup, &$results): void {
                     $waitGroup->add();
 
                     $results[$key] = $callback();

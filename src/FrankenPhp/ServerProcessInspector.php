@@ -28,7 +28,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
 
         try {
             return Http::get($this->adminConfigUrl())->successful();
-        } catch (ConnectionException $_) {
+        } catch (ConnectionException) {
             return false;
         }
     }
@@ -42,7 +42,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
             Http::withBody(Http::get($this->adminConfigUrl())->body(), 'application/json')
                 ->withHeaders(['Cache-Control' => 'must-revalidate'])
                 ->patch($this->adminConfigUrl());
-        } catch (ConnectionException $_) {
+        } catch (ConnectionException) {
             //
         }
     }
@@ -54,7 +54,7 @@ class ServerProcessInspector implements ServerProcessInspectorContract
     {
         try {
             return Http::post($this->adminUrl().'/stop')->successful();
-        } catch (ConnectionException $_) {
+        } catch (ConnectionException) {
             return false;
         }
     }

@@ -16,7 +16,7 @@ class GiveNewApplicationInstanceToDatabaseManager
             return;
         }
 
-        with($event->sandbox->make('db'), function ($manager) use ($event) {
+        with($event->sandbox->make('db'), function ($manager) use ($event): void {
             $manager->setApplication($event->sandbox);
         });
     }

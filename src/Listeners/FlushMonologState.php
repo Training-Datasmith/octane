@@ -19,8 +19,6 @@ class FlushMonologState
 
         collect($event->sandbox->make('log')->getChannels())
             ->map->getLogger()
-            ->filter(function ($logger) {
-                return $logger instanceof ResettableInterface;
-            })->each->reset();
+            ->filter(fn($logger) => $logger instanceof ResettableInterface)->each->reset();
     }
 }

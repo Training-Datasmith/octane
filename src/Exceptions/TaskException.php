@@ -7,13 +7,6 @@ use Exception;
 class TaskException extends Exception
 {
     /**
-     * The original throwable class name.
-     *
-     * @var string
-     */
-    protected $class;
-
-    /**
      * Creates a new task exception.
      *
      * @param  string  $class
@@ -21,13 +14,13 @@ class TaskException extends Exception
      * @param  int  $code
      * @param  string  $file
      * @param  int  $line
-     * @return void
      */
-    public function __construct($class, $message, $code, $file, $line)
+    public function __construct(/**
+     * The original throwable class name.
+     */
+    protected $class, $message, $code, $file, $line)
     {
         parent::__construct($message, $code);
-
-        $this->class = $class;
         $this->file = $file;
         $this->line = $line;
     }

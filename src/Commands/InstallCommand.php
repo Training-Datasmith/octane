@@ -50,7 +50,7 @@ class InstallCommand extends Command
             'roadrunner' => $this->installRoadRunnerServer(),
             'frankenphp' => $this->installFrankenPhpServer(),
             default => $this->invalidServer($server),
-        }, function ($installed) use ($server) {
+        }, function ($installed) use ($server): void {
             if ($installed) {
                 $this->updateEnvironmentFile($server);
 
@@ -69,9 +69,8 @@ class InstallCommand extends Command
      * Updates the environment file with the given server.
      *
      * @param  string  $server
-     * @return void
      */
-    public function updateEnvironmentFile($server)
+    public function updateEnvironmentFile($server): void
     {
         if (File::exists($env = app()->environmentFile())) {
             $contents = File::get($env);
@@ -101,7 +100,7 @@ class InstallCommand extends Command
 
         if (File::exists(base_path('.gitignore'))) {
             collect(['rr', '.rr.yaml'])
-                ->each(function ($file) {
+                ->each(function (string $file): void {
                     $contents = File::get(base_path('.gitignore'));
                     if (! Str::contains($contents, $file.PHP_EOL)) {
                         File::append(
@@ -142,7 +141,7 @@ class InstallCommand extends Command
             $contents = File::get($gitIgnorePath);
 
             $filesToAppend = collect(['**/caddy', 'frankenphp', 'frankenphp-worker.php'])
-                ->filter(fn ($file) => ! str_contains($contents, $file.PHP_EOL))
+                ->filter(fn ($file): bool => ! str_contains($contents, $file.PHP_EOL))
                 ->implode(PHP_EOL);
 
             if ($filesToAppend !== '') {

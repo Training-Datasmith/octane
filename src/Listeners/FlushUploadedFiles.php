@@ -16,11 +16,12 @@ class FlushUploadedFiles
     {
         foreach ($event->request->files->all() as $files) {
             foreach (Arr::wrap($files) as $file) {
-                if (! $file instanceof SplFileInfo ||
-                    ! is_string($path = $file->getRealPath())) {
+                if (! $file instanceof SplFileInfo) {
                     continue;
                 }
-
+                if (! is_string($path = $file->getRealPath())) {
+                    continue;
+                }
                 clearstatcache(true, $path);
 
                 if (is_file($path)) {

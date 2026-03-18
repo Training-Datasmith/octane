@@ -66,7 +66,6 @@ class RoadRunnerClient implements Client, StoppableClient
     /**
      * Resolve the stream response callback from the given response.
      *
-     * @param  \Symfony\Component\HttpFoundation\StreamedResponse  $response
      * @return \Closure|null
      */
     public static function resolveStreamResponseCallback(StreamedResponse $response)

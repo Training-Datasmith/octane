@@ -23,7 +23,6 @@ class OctaneStore implements Store
      * Create a new Octane store.
      *
      * @param  \Swoole\Table  $table
-     * @return void
      */
     public function __construct(protected $table)
     {
@@ -52,10 +51,9 @@ class OctaneStore implements Store
     /**
      * Retrieve an interval item from the cache.
      *
-     * @param  string  $key
      * @return array|null
      */
-    protected function getInterval($key)
+    protected function getInterval(string $key)
     {
         $interval = $this->get('interval-'.$key);
 
@@ -71,18 +69,16 @@ class OctaneStore implements Store
      */
     public function many(array $keys)
     {
-        return collect($keys)->mapWithKeys(fn ($key) => [$key => $this->get($key)])->all();
+        return collect($keys)->mapWithKeys(fn ($key): array => [$key => $this->get($key)])->all();
     }
 
     /**
      * Store an item in the cache for a given number of seconds.
      *
-     * @param  string  $key
      * @param  mixed  $value
      * @param  int  $seconds
-     * @return bool
      */
-    public function put($key, $value, $seconds)
+    public function put(string $key, $value, $seconds): bool
     {
         return $this->table->set($key, [
             'value' => serialize($value),
@@ -94,9 +90,8 @@ class OctaneStore implements Store
      * Store multiple items in the cache for a given number of seconds.
      *
      * @param  int  $seconds
-     * @return bool
      */
-    public function putMany(array $values, $seconds)
+    public function putMany(array $values, $seconds): bool
     {
         foreach ($values as $key => $value) {
             $this->put($key, $value, $seconds);
@@ -120,7 +115,7 @@ class OctaneStore implements Store
             return tap($value, fn ($value) => $this->put($key, $value, static::ONE_YEAR));
         }
 
-        return tap((int) (unserialize($record['value']) + $value), function ($value) use ($key, $record) {
+        return tap((int) (unserialize($record['value']) + $value), function ($value) use ($key, $record): void {
             $this->put($key, $value, $record['expiration'] - Carbon::now()->getTimestamp());
         });
     }
@@ -152,11 +147,9 @@ class OctaneStore implements Store
     /**
      * Register a cache key that should be refreshed at a given interval (in minutes).
      *
-     * @param  string  $key
      * @param  int  $seconds
-     * @return void
      */
-    public function interval($key, Closure $resolver, $seconds)
+    public function interval(string $key, Closure $resolver, $seconds): void
     {
         if (! is_null($this->getInterval($key))) {
             $this->intervals[] = $key;
@@ -175,10 +168,8 @@ class OctaneStore implements Store
 
     /**
      * Refresh all of the applicable interval caches.
-     *
-     * @return void
      */
-    public function refreshIntervalCaches()
+    public function refreshIntervalCaches(): void
     {
         foreach ($this->intervals as $key) {
             if (! $this->intervalShouldBeRefreshed($interval = $this->getInterval($key))) {
@@ -199,10 +190,8 @@ class OctaneStore implements Store
 
     /**
      * Determine if the given interval record should be refreshed.
-     *
-     * @return bool
      */
-    protected function intervalShouldBeRefreshed(array $interval)
+    protected function intervalShouldBeRefreshed(array $interval): bool
     {
         return is_null($interval['lastRefreshedAt']) ||
                (Carbon::now()->getTimestamp() - $interval['lastRefreshedAt']) >= $interval['refreshInterval'];
@@ -210,24 +199,19 @@ class OctaneStore implements Store
 
     /**
      * Remove an item from the cache.
-     *
-     * @param  string  $key
-     * @return bool
      */
-    public function forget($key)
+    public function forget(string $key): bool
     {
         return $this->table->del($key);
     }
 
     /**
      * Remove all items from the cache.
-     *
-     * @return bool
      */
-    public function flush()
+    public function flush(): bool
     {
         foreach ($this->table as $key => $record) {
-            if (str_starts_with($key, 'interval-')) {
+            if (str_starts_with((string) $key, 'interval-')) {
                 continue;
             }
 
@@ -241,19 +225,16 @@ class OctaneStore implements Store
      * Determine if the record is missing or expired.
      *
      * @param  array|null  $record
-     * @return bool
      */
-    protected function recordIsFalseOrExpired($record)
+    protected function recordIsFalseOrExpired($record): bool
     {
         return $record === false || $record['expiration'] <= Carbon::now()->getTimestamp();
     }
 
     /**
      * Get the cache key prefix.
-     *
-     * @return string
      */
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return '';
     }

@@ -17,7 +17,7 @@ class GiveNewApplicationInstanceToPipelineHub
             return;
         }
 
-        with($event->sandbox->make(Hub::class), function ($hub) use ($event) {
+        with($event->sandbox->make(Hub::class), function ($hub) use ($event): void {
             $hub->setContainer($event->sandbox);
         });
     }
