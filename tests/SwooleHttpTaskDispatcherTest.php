@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Exception;
@@ -19,7 +21,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
             '8000',
-            new SequentialTaskDispatcher,
+            new SequentialTaskDispatcher(),
         );
 
         Http::fake([
@@ -45,7 +47,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
             '8000',
-            new SequentialTaskDispatcher,
+            new SequentialTaskDispatcher(),
         );
 
         Http::fake([
@@ -63,7 +65,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
             '8000',
-            new SequentialTaskDispatcher,
+            new SequentialTaskDispatcher(),
         );
 
         $this->assertEquals([
@@ -82,7 +84,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
             '8000',
-            new SequentialTaskDispatcher,
+            new SequentialTaskDispatcher(),
         );
 
         $dispatcher->dispatch([
@@ -96,7 +98,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
             '8000',
-            new SequentialTaskDispatcher,
+            new SequentialTaskDispatcher(),
         );
 
         Http::fake([
@@ -114,7 +116,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
             '8000',
-            new SequentialTaskDispatcher,
+            new SequentialTaskDispatcher(),
         );
 
         Http::fake([
@@ -134,7 +136,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
             '8000',
-            new SequentialTaskDispatcher,
+            new SequentialTaskDispatcher(),
         );
 
         Http::fake([
@@ -149,7 +151,7 @@ class SwooleHttpTaskDispatcherTest extends TestCase
         $dispatcher = new SwooleHttpTaskDispatcher(
             '127.0.0.1',
             '8000',
-            new SequentialTaskDispatcher,
+            new SequentialTaskDispatcher(),
         );
 
         Http::fake([

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Swoole\Actions;
 
 use Illuminate\Http\Request;

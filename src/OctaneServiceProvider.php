@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane;
 
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -41,38 +43,38 @@ class OctaneServiceProvider extends ServiceProvider
 
         $this->app->singleton('octane', Octane::class);
 
-        $this->app->bind(RoadRunnerServerProcessInspector::class, fn($app) => new RoadRunnerServerProcessInspector(
+        $this->app->bind(RoadRunnerServerProcessInspector::class, fn ($app) => new RoadRunnerServerProcessInspector(
             $app->make(RoadRunnerServerStateFile::class),
-            new SymfonyProcessFactory,
-            new PosixExtension,
+            new SymfonyProcessFactory(),
+            new PosixExtension(),
         ));
 
-        $this->app->bind(RoadRunnerServerStateFile::class, fn($app) => new RoadRunnerServerStateFile($app['config']->get(
+        $this->app->bind(RoadRunnerServerStateFile::class, fn ($app) => new RoadRunnerServerStateFile($app['config']->get(
             'octane.state_file',
             storage_path('logs/octane-server-state.json')
         )));
 
-        $this->app->bind(SwooleServerProcessInspector::class, fn($app) => new SwooleServerProcessInspector(
+        $this->app->bind(SwooleServerProcessInspector::class, fn ($app) => new SwooleServerProcessInspector(
             $app->make(SignalDispatcher::class),
             $app->make(SwooleServerStateFile::class),
             $app->make(Exec::class),
         ));
 
-        $this->app->bind(SwooleServerStateFile::class, fn($app) => new SwooleServerStateFile($app['config']->get(
+        $this->app->bind(SwooleServerStateFile::class, fn ($app) => new SwooleServerStateFile($app['config']->get(
             'octane.state_file',
             storage_path('logs/octane-server-state.json')
         )));
 
-        $this->app->bind(FrankenPhpServerProcessInspector::class, fn($app) => new FrankenPhpServerProcessInspector(
+        $this->app->bind(FrankenPhpServerProcessInspector::class, fn ($app) => new FrankenPhpServerProcessInspector(
             $app->make(FrankenPhpServerStateFile::class)
         ));
 
-        $this->app->bind(FrankenPhpServerStateFile::class, fn($app) => new FrankenPhpServerStateFile($app['config']->get(
+        $this->app->bind(FrankenPhpServerStateFile::class, fn ($app) => new FrankenPhpServerStateFile($app['config']->get(
             'octane.state_file',
             storage_path('logs/octane-server-state.json')
         )));
 
-        $this->app->bind(DispatchesCoroutines::class, fn($app) => class_exists(\Swoole\Http\Server::class)
+        $this->app->bind(DispatchesCoroutines::class, fn ($app) => class_exists(\Swoole\Http\Server::class)
                     ? new SwooleCoroutineDispatcher($app->bound(\Swoole\Http\Server::class))
                     : $app->make(SequentialCoroutineDispatcher::class));
     }
@@ -149,7 +151,7 @@ class OctaneServiceProvider extends ServiceProvider
 
         $store = $this->app->bound('octane.cacheTable')
                         ? new OctaneStore($this->app['octane.cacheTable'])
-                        : new OctaneArrayStore;
+                        : new OctaneArrayStore();
 
         Event::listen(TickReceived::class, fn () => $store->refreshIntervalCaches());
 
@@ -190,7 +192,7 @@ class OctaneServiceProvider extends ServiceProvider
     {
         (new OctaneFacade())->route('POST', '/octane/resolve-tasks', function (Request $request): \Illuminate\Http\Response {
             try {
-                return new Response(serialize((new SwooleTaskDispatcher)->resolve(
+                return new Response(serialize((new SwooleTaskDispatcher())->resolve(
                     unserialize(Crypt::decryptString($request->input('tasks'))),
                     $request->input('wait')
                 )), 200);
@@ -205,7 +207,7 @@ class OctaneServiceProvider extends ServiceProvider
 
         (new OctaneFacade())->route('POST', '/octane/dispatch-tasks', function (Request $request): \Illuminate\Http\Response {
             try {
-                (new SwooleTaskDispatcher)->dispatch(
+                (new SwooleTaskDispatcher())->dispatch(
                     unserialize(Crypt::decryptString($request->input('tasks'))),
                 );
             } catch (DecryptException) {

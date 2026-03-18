@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Listeners;
 
 use Illuminate\Support\Str;
@@ -36,7 +38,7 @@ class FlushUploadedFilesTest extends TestCase
             $event = new \stdClass();
             $event->request = $request;
 
-            (new FlushUploadedFiles)->handle($event);
+            (new FlushUploadedFiles())->handle($event);
 
             $this->assertFileDoesNotExist($file1path);
             $this->assertFileDoesNotExist($file2path);

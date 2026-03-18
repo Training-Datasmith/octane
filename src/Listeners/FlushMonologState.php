@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Listeners;
 
 use Monolog\ResettableInterface;
@@ -19,6 +21,6 @@ class FlushMonologState
 
         collect($event->sandbox->make('log')->getChannels())
             ->map->getLogger()
-            ->filter(fn($logger) => $logger instanceof ResettableInterface)->each->reset();
+            ->filter(fn ($logger) => $logger instanceof ResettableInterface)->each->reset();
     }
 }

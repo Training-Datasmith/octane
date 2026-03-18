@@ -1,18 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Commands\Concerns;
 
 use Illuminate\Support\Str;
 use Laravel\Octane\RoadRunner\Concerns\FindsRoadRunnerBinary;
+
+use function Laravel\Prompts\confirm;
+
 use RuntimeException;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
-use Throwable;
 
-use function Laravel\Prompts\confirm;
+use Throwable;
 
 trait InstallsRoadRunnerDependencies
 {
@@ -80,7 +84,7 @@ trait InstallsRoadRunnerDependencies
     {
         $composerPath = getcwd().'/composer.phar';
 
-        $phpPath = (new PhpExecutableFinder)->find();
+        $phpPath = (new PhpExecutableFinder())->find();
 
         if (! file_exists($composerPath)) {
             $composerPath = (new ExecutableFinder())->find('composer');
@@ -160,7 +164,7 @@ trait InstallsRoadRunnerDependencies
         $installed = false;
 
         tap(new Process(array_filter([
-            (new PhpExecutableFinder)->find(),
+            (new PhpExecutableFinder())->find(),
             './vendor/bin/rr',
             'get-binary',
             '-n',

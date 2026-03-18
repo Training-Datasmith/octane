@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -14,8 +16,12 @@ class InvokeTickCallableTest extends TestCase
         Carbon::setTestNow($now = now());
 
         $instance = new InvokeTickCallable(
-            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 1, true,
-            $cache = Mockery::mock('stdClass'), Mockery::mock(ExceptionHandler::class)
+            'key',
+            fn () => $_SERVER['__test.invokeTickCallable'] = true,
+            1,
+            true,
+            $cache = Mockery::mock('stdClass'),
+            Mockery::mock(ExceptionHandler::class)
         );
 
         $cache->shouldReceive('get')->with('tick-key')->andReturn(time() - 100);
@@ -37,8 +43,12 @@ class InvokeTickCallableTest extends TestCase
         $_SERVER['__test.invokeTickCallable'] = false;
 
         $instance = new InvokeTickCallable(
-            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 30, true,
-            $cache = Mockery::mock('stdClass'), Mockery::mock(ExceptionHandler::class)
+            'key',
+            fn () => $_SERVER['__test.invokeTickCallable'] = true,
+            30,
+            true,
+            $cache = Mockery::mock('stdClass'),
+            Mockery::mock(ExceptionHandler::class)
         );
 
         $cache->shouldReceive('get')->with('tick-key')->andReturn(time() - 10);
@@ -58,8 +68,12 @@ class InvokeTickCallableTest extends TestCase
         Carbon::setTestNow($now = now());
 
         $instance = new InvokeTickCallable(
-            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 1, true,
-            $cache = Mockery::mock('stdClass'), Mockery::mock(ExceptionHandler::class)
+            'key',
+            fn () => $_SERVER['__test.invokeTickCallable'] = true,
+            1,
+            true,
+            $cache = Mockery::mock('stdClass'),
+            Mockery::mock(ExceptionHandler::class)
         );
 
         $cache->shouldReceive('get')->with('tick-key')->andReturn(null);
@@ -79,8 +93,12 @@ class InvokeTickCallableTest extends TestCase
         Carbon::setTestNow($now = now());
 
         $instance = new InvokeTickCallable(
-            'key', fn () => $_SERVER['__test.invokeTickCallable'] = true, 1, false,
-            $cache = Mockery::mock('stdClass'), Mockery::mock(ExceptionHandler::class)
+            'key',
+            fn () => $_SERVER['__test.invokeTickCallable'] = true,
+            1,
+            false,
+            $cache = Mockery::mock('stdClass'),
+            Mockery::mock(ExceptionHandler::class)
         );
 
         $cache->shouldReceive('get')->with('tick-key')->andReturn(null);

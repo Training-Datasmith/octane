@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\Commands\Command;
@@ -86,8 +88,7 @@ EOF, $output->fetch());
     {
         $output = new BufferedOutput();
 
-        return [$output, new class($output) extends Command
-        {
+        return [$output, new class ($output) extends Command {
             public function __construct($output)
             {
                 parent::__construct('foo');

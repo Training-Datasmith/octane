@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Exception;
@@ -24,7 +26,7 @@ class RoadRunnerClientTest extends TestCase
     {
         $client = new RoadRunnerClient(Mockery::mock(PSR7Worker::class));
 
-        $psr7Request = (new ServerRequestFactory)->createServerRequest('GET', '/home');
+        $psr7Request = (new ServerRequestFactory())->createServerRequest('GET', '/home');
         $psr7Request = $psr7Request->withQueryParams(['name' => 'Taylor']);
 
         [$request, $context] = $client->marshalRequest(new RequestContext([
@@ -41,7 +43,7 @@ class RoadRunnerClientTest extends TestCase
     {
         $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
 
-        $psr7Request = (new ServerRequestFactory)->createServerRequest('GET', '/home');
+        $psr7Request = (new ServerRequestFactory())->createServerRequest('GET', '/home');
         $psr7Request = $psr7Request->withQueryParams(['name' => 'Taylor']);
 
         $psr7Client->shouldReceive('respond')->once()->with(Mockery::type(ResponseInterface::class));
@@ -57,7 +59,7 @@ class RoadRunnerClientTest extends TestCase
     {
         $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
 
-        $psr7Request = (new ServerRequestFactory)->createServerRequest('GET', '/home');
+        $psr7Request = (new ServerRequestFactory())->createServerRequest('GET', '/home');
         $psr7Request = $psr7Request->withQueryParams(['name' => 'Taylor']);
 
         $psr7Client->shouldReceive('respond')->once()->with(Mockery::type(ResponseInterface::class));
@@ -75,7 +77,7 @@ class RoadRunnerClientTest extends TestCase
     {
         $client = new RoadRunnerClient($psr7Client = Mockery::mock(PSR7Worker::class));
 
-        $psr7Request = (new ServerRequestFactory)->createServerRequest('GET', '/home');
+        $psr7Request = (new ServerRequestFactory())->createServerRequest('GET', '/home');
         $psr7Request = $psr7Request->withQueryParams(['name' => 'Taylor']);
 
         $httpWorker = Mockery::mock(HttpWorker::class);
@@ -108,7 +110,7 @@ class RoadRunnerClientTest extends TestCase
         $app = $this->createApplication();
         $app['config']['app.debug'] = false;
         $request = Request::create('/', 'GET');
-        $context = new RequestContext;
+        $context = new RequestContext();
 
         $client->error(new Exception('Something went wrong...'), $app, $request, $context);
     }
@@ -128,7 +130,7 @@ class RoadRunnerClientTest extends TestCase
         $app['config']['app.debug'] = true;
 
         $request = Request::create('/', 'GET');
-        $context = new RequestContext;
+        $context = new RequestContext();
 
         $client->error($e, $app, $request, $context);
     }

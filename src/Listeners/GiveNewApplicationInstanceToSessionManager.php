@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Listeners;
 
 class GiveNewApplicationInstanceToSessionManager
@@ -11,6 +13,6 @@ class GiveNewApplicationInstanceToSessionManager
      */
     public function handle($event): void
     {
-        //
+
     }
 }

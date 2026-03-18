@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\PosixExtension;
@@ -18,7 +20,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
     {
         $inspector = new ServerProcessInspector(
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
-            new SymfonyProcessFactory,
+            new SymfonyProcessFactory(),
             $posix = Mockery::mock(PosixExtension::class)
         );
 
@@ -35,7 +37,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
     {
         $inspector = new ServerProcessInspector(
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
-            new SymfonyProcessFactory,
+            new SymfonyProcessFactory(),
             $posix = Mockery::mock(PosixExtension::class)
         );
 
@@ -56,7 +58,7 @@ class RoadRunnerServerProcessInspectorTest extends TestCase
         $inspector = new ServerProcessInspector(
             $processIdFile = new ServerStateFile(sys_get_temp_dir().'/swoole.pid'),
             $processFactory = Mockery::mock(SymfonyProcessFactory::class),
-            new PosixExtension
+            new PosixExtension()
         );
 
         $processIdFile->writeState([

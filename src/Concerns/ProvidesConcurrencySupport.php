@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Concerns;
 
 use Laravel\Octane\Contracts\DispatchesTasks;
@@ -39,13 +41,13 @@ trait ProvidesConcurrencySupport
     {
         return match (true) {
             app()->bound(DispatchesTasks::class) => app(DispatchesTasks::class),
-            app()->bound(Server::class) => new SwooleTaskDispatcher,
+            app()->bound(Server::class) => new SwooleTaskDispatcher(),
             class_exists(Server::class) => (fn (array $serverState): \Laravel\Octane\Swoole\SwooleHttpTaskDispatcher => new SwooleHttpTaskDispatcher(
                 $serverState['state']['host'] ?? '127.0.0.1',
                 $serverState['state']['port'] ?? '8000',
-                new SequentialTaskDispatcher
+                new SequentialTaskDispatcher()
             ))(app(ServerStateFile::class)->read()),
-            default => new SequentialTaskDispatcher,
+            default => new SequentialTaskDispatcher(),
         };
     }
 }

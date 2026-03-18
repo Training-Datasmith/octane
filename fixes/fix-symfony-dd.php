@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Laravel\Octane\Exceptions\DdException;
 
 if (! function_exists('dd')) {

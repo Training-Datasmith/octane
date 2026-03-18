@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\FrankenPhp\Concerns;
 
 use Symfony\Component\Process\ExecutableFinder;

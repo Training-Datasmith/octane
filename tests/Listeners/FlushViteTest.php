@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Listeners;
 
 use Illuminate\Foundation\Vite;
@@ -17,8 +19,7 @@ class FlushViteTest extends TestCase
         ]);
         $app['router']->get('/', fn () => 'ok');
 
-        $app->instance(Vite::class, $vite = new class extends Vite
-        {
+        $app->instance(Vite::class, $vite = new class () extends Vite {
             public int $flushCalled = 0;
 
             public function flush()
@@ -40,8 +41,7 @@ class FlushViteTest extends TestCase
         ]);
         $app['router']->get('/', fn () => 'ok');
 
-        $app->instance(Vite::class, new class {
-            //
+        $app->instance(Vite::class, new class () {
         });
         $worker->run();
 

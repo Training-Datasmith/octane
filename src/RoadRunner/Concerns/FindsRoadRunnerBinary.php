@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\RoadRunner\Concerns;
 
 use Illuminate\Support\Str;
@@ -16,7 +18,7 @@ trait FindsRoadRunnerBinary
             return base_path('rr');
         }
 
-        if (! is_null($roadRunnerBinary = (new ExecutableFinder)->find('rr', null, [base_path()]))) {
+        if (! is_null($roadRunnerBinary = (new ExecutableFinder())->find('rr', null, [base_path()]))) {
             if (! Str::contains($roadRunnerBinary, 'vendor/bin/rr')) {
                 return $roadRunnerBinary;
             }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Swoole\Handlers;
 
 use Laravel\Octane\ApplicationFactory;
@@ -62,7 +64,7 @@ class OnWorkerStart
         try {
             return tap(new Worker(
                 new ApplicationFactory($this->basePath),
-                $this->workerState->client = new SwooleClient
+                $this->workerState->client = new SwooleClient()
             ))->boot([
                 'octane.cacheTable' => $this->workerState->cacheTable,
                 Server::class => $server,

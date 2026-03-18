@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Illuminate\Foundation\Application;
@@ -142,7 +144,7 @@ class RequestStateTestFormRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
         ];
     }
 

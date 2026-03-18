@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Cache;
 
 use Closure;
@@ -178,7 +180,8 @@ class OctaneStore implements Store
 
             try {
                 $this->forever('interval-'.$key, serialize(array_merge(
-                    $interval, ['lastRefreshedAt' => Carbon::now()->getTimestamp()],
+                    $interval,
+                    ['lastRefreshedAt' => Carbon::now()->getTimestamp()],
                 )));
 
                 $this->forever($key, $interval['resolver']());

@@ -1,20 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Laravel\Octane\Swoole\SwooleExtension;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Throwable;
 
 use function Laravel\Prompts\select;
+
+use Symfony\Component\Console\Attribute\AsCommand;
+
+use Throwable;
 
 #[AsCommand(name: 'octane:install')]
 class InstallCommand extends Command
 {
-    use Concerns\InstallsFrankenPhpDependencies,
-        Concerns\InstallsRoadRunnerDependencies;
+    use Concerns\InstallsFrankenPhpDependencies;
+    use Concerns\InstallsRoadRunnerDependencies;
 
     /**
      * The command's signature.

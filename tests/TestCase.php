@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Carbon\Laravel\ServiceProvider as CarbonServiceProvider;
@@ -12,11 +14,13 @@ use Laravel\Octane\Testing\Fakes\FakeClient;
 use Laravel\Octane\Testing\Fakes\FakeWorker;
 use Mockery;
 use Orchestra\Testbench\Concerns\InteractsWithMockery;
-use Orchestra\Testbench\Foundation\Application as Testbench;
-use PHPUnit\Framework\TestCase as BaseTestCase;
-use Swoole\Table;
 
 use function Orchestra\Testbench\default_skeleton_path;
+
+use Orchestra\Testbench\Foundation\Application as Testbench;
+use PHPUnit\Framework\TestCase as BaseTestCase;
+
+use Swoole\Table;
 
 class TestCase extends BaseTestCase
 {

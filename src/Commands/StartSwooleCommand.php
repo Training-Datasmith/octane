@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
@@ -14,7 +16,8 @@ use Symfony\Component\Process\Process;
 #[AsCommand(name: 'octane:swoole')]
 class StartSwooleCommand extends Command implements SignalableCommandInterface
 {
-    use Concerns\InteractsWithEnvironmentVariables, Concerns\InteractsWithServers;
+    use Concerns\InteractsWithEnvironmentVariables;
+    use Concerns\InteractsWithServers;
 
     /**
      * The command's signature.
@@ -79,7 +82,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         $this->forgetEnvironmentVariables();
 
         $server = tap(new Process([
-            (new PhpExecutableFinder)->find(),
+            (new PhpExecutableFinder())->find(),
             ...config('octane.swoole.php_options', []),
             config('octane.swoole.command', 'swoole-server'),
             $serverStateFile->path(),
@@ -175,7 +178,8 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
         Str::of($output)
             ->explode("\n")
             ->filter()
-            ->each(fn ($output) => is_array($stream = json_decode((string) $output, true))
+            ->each(
+                fn ($output) => is_array($stream = json_decode((string) $output, true))
                 ? $this->handleStream($stream)
                 : $this->components->info($output)
             );

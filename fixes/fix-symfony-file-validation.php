@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // https://github.com/avto-dev/roadrunner-laravel/issues/10
 // https://github.com/spiral/roadrunner/issues/133
 

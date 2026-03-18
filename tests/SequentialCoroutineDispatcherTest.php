@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\SequentialCoroutineDispatcher;
@@ -8,7 +10,7 @@ class SequentialCoroutineDispatcherTest extends TestCase
 {
     public function test_coroutines_can_be_resolved()
     {
-        $dispatcher = new SequentialCoroutineDispatcher;
+        $dispatcher = new SequentialCoroutineDispatcher();
 
         $this->assertEquals([
             'first' => 1,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Swoole\Handlers;
 
 use Laravel\Octane\Swoole\Actions\EnsureRequestsDontExceedMaxExecutionTime;
@@ -45,7 +47,10 @@ class OnServerStart
         if ($this->maxExecutionTime > 0) {
             Timer::tick(1000, function () use ($server): void {
                 (new EnsureRequestsDontExceedMaxExecutionTime(
-                    $this->extension, $this->timerTable, $this->maxExecutionTime, $server
+                    $this->extension,
+                    $this->timerTable,
+                    $this->maxExecutionTime,
+                    $server
                 ))();
             });
         }

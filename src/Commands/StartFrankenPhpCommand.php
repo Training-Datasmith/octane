@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
@@ -199,8 +201,7 @@ class StartFrankenPhpCommand extends Command implements SignalableCommandInterfa
      */
     protected function startServerWatcher()
     {
-        return new class
-        {
+        return new class () {
             public function __call(string $method, array $parameters)
             {
                 return null;

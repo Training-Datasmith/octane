@@ -1,15 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
+
+use function Orchestra\Testbench\default_skeleton_path;
 
 use Orchestra\Testbench\Foundation\Actions\DeleteVendorSymlink;
 use Orchestra\Testbench\Foundation\Application as Testbench;
+
+use function Orchestra\Testbench\package_path;
+
+use function Orchestra\Testbench\php_binary;
+
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
-
-use function Orchestra\Testbench\default_skeleton_path;
-use function Orchestra\Testbench\package_path;
-use function Orchestra\Testbench\php_binary;
 
 class BinaryBootstrapTest extends TestCase
 {
@@ -26,7 +31,7 @@ class BinaryBootstrapTest extends TestCase
     {
         parent::tearDown();
 
-        (new DeleteVendorSymlink)->handle($this->app);
+        (new DeleteVendorSymlink())->handle($this->app);
 
         unset($this->app);
     }
@@ -36,7 +41,11 @@ class BinaryBootstrapTest extends TestCase
         $basePath = default_skeleton_path();
 
         $process = Process::fromShellCommandline(
-            php_binary(escape: true).' base-path.php', __DIR__, ['APP_BASE_PATH' => $basePath], null, null
+            php_binary(escape: true).' base-path.php',
+            __DIR__,
+            ['APP_BASE_PATH' => $basePath],
+            null,
+            null
         );
 
         $process->mustRun();

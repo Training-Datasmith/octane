@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Commands;
 
 use Illuminate\Support\Str;
@@ -14,9 +16,9 @@ use Symfony\Component\Process\Process;
 #[AsCommand(name: 'octane:roadrunner')]
 class StartRoadRunnerCommand extends Command implements SignalableCommandInterface
 {
-    use Concerns\InstallsRoadRunnerDependencies,
-        Concerns\InteractsWithEnvironmentVariables,
-        Concerns\InteractsWithServers;
+    use Concerns\InstallsRoadRunnerDependencies;
+    use Concerns\InteractsWithEnvironmentVariables;
+    use Concerns\InteractsWithServers;
 
     /**
      * The command's signature.
@@ -83,7 +85,7 @@ class StartRoadRunnerCommand extends Command implements SignalableCommandInterfa
             '-c', $this->configPath(),
             '-o', 'version=3',
             '-o', 'http.address='.$this->getHost().':'.$this->getPort(),
-            '-o', 'server.command='.(new PhpExecutableFinder)->find().','.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
+            '-o', 'server.command='.(new PhpExecutableFinder())->find().','.base_path(config('octane.roadrunner.command', 'vendor/bin/roadrunner-worker')),
             '-o', 'http.pool.num_workers='.$this->workerCount(),
             '-o', 'http.pool.max_jobs='.$this->option('max-requests'),
             '-o', 'rpc.listen=tcp://'.$this->rpcHost().':'.$this->rpcPort(),

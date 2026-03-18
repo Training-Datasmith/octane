@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Listeners;
 
 use Illuminate\Contracts\Auth\Access\Gate;

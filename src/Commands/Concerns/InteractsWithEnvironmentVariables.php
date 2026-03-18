@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Commands\Concerns;
 
 use Dotenv\Exception\InvalidPathException;

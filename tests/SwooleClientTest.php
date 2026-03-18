@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Config;
@@ -18,10 +20,9 @@ class SwooleClientTest extends TestCase
 {
     public function test_marshal_request_method_marshals_proper_illuminate_request(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
-        $swooleRequest = new class
-        {
+        $swooleRequest = new class () {
             public $get = [
                 'name' => 'Taylor',
             ];
@@ -62,7 +63,7 @@ class SwooleClientTest extends TestCase
 
     public function test_can_serve_static_files_if_configured_to_and_file_is_within_public_directory(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $request = Request::create('/foo.txt', 'GET');
 
@@ -76,7 +77,7 @@ class SwooleClientTest extends TestCase
 
     public function test_can_serve_static_files_when_explicitly_enabled(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $request = Request::create('/foo.txt', 'GET');
 
@@ -92,7 +93,7 @@ class SwooleClientTest extends TestCase
 
     public function test_cant_serve_static_files_when_disabled(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $request = Request::create('/foo.txt', 'GET');
 
@@ -108,7 +109,7 @@ class SwooleClientTest extends TestCase
 
     public function test_cant_serve_static_files_if_file_is_outside_public_directory(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $request = Request::create('/../foo.txt', 'GET');
 
@@ -122,7 +123,7 @@ class SwooleClientTest extends TestCase
 
     public function test_cant_serve_static_files_if_file_has_forbidden_extension(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $request = Request::create('/foo.php', 'GET');
 
@@ -138,7 +139,7 @@ class SwooleClientTest extends TestCase
     #[DoesNotPerformAssertions]
     public function test_static_file_can_be_served(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $request = Request::create('/foo.txt', 'GET');
 
@@ -160,7 +161,7 @@ class SwooleClientTest extends TestCase
     public function test_static_file_headers_can_be_sent(): void
     {
         $this->createApplication();
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $request = Request::create('/foo.txt', 'GET');
 
@@ -186,7 +187,7 @@ class SwooleClientTest extends TestCase
 
     public function test_can_serve_static_files_through_symlink(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $request = Request::create('/symlink/foo.txt', 'GET');
 
@@ -200,7 +201,7 @@ class SwooleClientTest extends TestCase
 
     public function test_cant_serve_static_files_through_symlink_using_directory_traversal(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $request = Request::create('/symlink/../foo.txt', 'GET');
 
@@ -218,7 +219,7 @@ class SwooleClientTest extends TestCase
     {
         $this->createApplication();
 
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
@@ -250,7 +251,7 @@ class SwooleClientTest extends TestCase
     public function test_respond_method_send_streamed_response_to_swoole(): void
     {
         $this->createApplication();
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
@@ -273,7 +274,7 @@ class SwooleClientTest extends TestCase
     public function test_respond_method_with_laravel_specific_status_code_sends_response_to_swoole(): void
     {
         $this->createApplication();
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $swooleResponse = Mockery::mock('Swoole\Http\Response');
 
@@ -293,7 +294,7 @@ class SwooleClientTest extends TestCase
     #[DoesNotPerformAssertions]
     public function test_error_method_sends_error_response_to_swoole(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $swooleResponse = Mockery::spy('Swoole\Http\Response');
 
@@ -314,7 +315,7 @@ class SwooleClientTest extends TestCase
     #[DoesNotPerformAssertions]
     public function test_error_method_sends_detailed_error_response_to_swoole_in_debug_mode(): void
     {
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $swooleResponse = Mockery::spy('Swoole\Http\Response');
 
@@ -336,7 +337,7 @@ class SwooleClientTest extends TestCase
     public function test_respond_method_send_not_chunked_response_to_swoole(): void
     {
         $this->createApplication();
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         $swooleResponse = Mockery::mock(SwooleResponse::class);
 
@@ -384,7 +385,7 @@ class SwooleClientTest extends TestCase
     {
         $this->createApplication();
 
-        $client = new SwooleClient;
+        $client = new SwooleClient();
 
         Config::set('octane.swoole.format_headers', false);
 

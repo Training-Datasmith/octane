@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Laravel\Octane\Swoole\SwooleExtension;
@@ -76,8 +78,7 @@ class SwooleExtensionTest extends TestCase
 
     protected function fakeExtensionWithFiles(array $files): object
     {
-        return new class($files) extends SwooleExtension
-        {
+        return new class ($files) extends SwooleExtension {
             public function __construct(private array $files)
             {
                 parent::__construct(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Swoole;
 
 use DateTime;
@@ -20,7 +22,7 @@ use Throwable;
 
 class SwooleClient implements Client, ServesStaticFiles
 {
-    const STATUS_CODE_REASONS = [
+    public const STATUS_CODE_REASONS = [
         419 => 'Page Expired',
         425 => 'Too Early',
         431 => 'Request Header Fields Too Large',                             // RFC6585
@@ -37,7 +39,7 @@ class SwooleClient implements Client, ServesStaticFiles
     public function marshalRequest(RequestContext $context): array
     {
         return [
-            (new Actions\ConvertSwooleRequestToIlluminateRequest)(
+            (new Actions\ConvertSwooleRequestToIlluminateRequest())(
                 $context->swooleRequest,
                 PHP_SAPI
             ),

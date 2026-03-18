@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // https://github.com/spiral/roadrunner-laravel/issues/43
 
 namespace Symfony\Component\HttpFoundation\File;

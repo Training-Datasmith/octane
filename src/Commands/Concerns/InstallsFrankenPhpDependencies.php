@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Commands\Concerns;
 
 use GuzzleHttp\Client;
@@ -7,11 +9,13 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Laravel\Octane\FrankenPhp\Concerns\FindsFrankenPhpBinary;
-use RuntimeException;
-use Symfony\Component\Process\Process;
-use Throwable;
 
 use function Laravel\Prompts\confirm;
+
+use RuntimeException;
+use Symfony\Component\Process\Process;
+
+use Throwable;
 
 trait InstallsFrankenPhpDependencies
 {
@@ -98,7 +102,7 @@ trait InstallsFrankenPhpDependencies
 
             $progressBar = null;
 
-            (new Client)->get(
+            (new Client())->get(
                 $githubProxyPrefix.$asset['browser_download_url'],
                 [
                     'sink' => $path,
@@ -145,7 +149,7 @@ trait InstallsFrankenPhpDependencies
             ->getOutput();
 
         $lineWithVersion = collect(explode("\n", (string) $buildInfo))
-            ->first(fn($line) => str_starts_with((string) $line, 'dep') && str_contains((string) $line, 'github.com/dunglas/frankenphp'));
+            ->first(fn ($line) => str_starts_with((string) $line, 'dep') && str_contains((string) $line, 'github.com/dunglas/frankenphp'));
 
         if ($lineWithVersion === null) {
             return $this->components->warn(

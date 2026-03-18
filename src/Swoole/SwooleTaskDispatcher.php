@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Swoole;
 
 use Closure;
@@ -27,7 +29,7 @@ class SwooleTaskDispatcher implements DispatchesTasks
             throw new InvalidArgumentException('Tasks can only be resolved within a Swoole server context / web request.');
         }
 
-        $results = app(Server::class)->taskWaitMulti(collect($tasks)->mapWithKeys(fn($task, $key) => [$key => $task instanceof Closure
+        $results = app(Server::class)->taskWaitMulti(collect($tasks)->mapWithKeys(fn ($task, $key) => [$key => $task instanceof Closure
                         ? new SerializableClosure($task)
                         : $task, ])->all(), $waitMilliseconds / 1000);
 

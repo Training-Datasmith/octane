@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Commands\Concerns;
 
 use Illuminate\Console\OutputStyle;
@@ -219,7 +221,7 @@ trait InteractsWithIO
     {
         $this->throwableInfo($throwable, $verbosity);
 
-        throw new ServerShutdownException;
+        throw new ServerShutdownException();
     }
 
     /**

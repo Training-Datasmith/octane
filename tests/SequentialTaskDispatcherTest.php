@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use Exception;
@@ -12,7 +14,7 @@ class SequentialTaskDispatcherTest extends TestCase
 {
     public function test_tasks_can_be_resolved()
     {
-        $dispatcher = new SequentialTaskDispatcher;
+        $dispatcher = new SequentialTaskDispatcher();
 
         $this->assertEquals([
             'first' => 1,
@@ -29,7 +31,7 @@ class SequentialTaskDispatcherTest extends TestCase
     public function test_resolving_tasks_with_exceptions_do_not_effect_other_tasks()
     {
         $this->createApplication();
-        $dispatcher = new SequentialTaskDispatcher;
+        $dispatcher = new SequentialTaskDispatcher();
 
         $a = false;
 
@@ -41,7 +43,7 @@ class SequentialTaskDispatcherTest extends TestCase
                 },
             ]);
         } catch (TaskException) {
-            //
+
         }
 
         $this->assertTrue($a);
@@ -51,7 +53,7 @@ class SequentialTaskDispatcherTest extends TestCase
     #[DoesNotPerformAssertions]
     public function test_dispatching_tasks_do_not_propagate_exceptions()
     {
-        $dispatcher = new SequentialTaskDispatcher;
+        $dispatcher = new SequentialTaskDispatcher();
 
         $dispatcher->dispatch([
             'first' => fn () => throw new Exception('Something went wrong'),
@@ -60,7 +62,7 @@ class SequentialTaskDispatcherTest extends TestCase
 
     public function test_tasks_can_be_dispatched()
     {
-        $dispatcher = new SequentialTaskDispatcher;
+        $dispatcher = new SequentialTaskDispatcher();
 
         $first = null;
         $second = null;

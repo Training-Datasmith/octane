@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Swoole;
 
 use Laravel\Octane\Contracts\DispatchesCoroutines;
@@ -20,7 +22,7 @@ class SwooleCoroutineDispatcher implements DispatchesCoroutines
         $results = [];
 
         $callback = function () use (&$results, $coroutines, $waitSeconds): void {
-            $waitGroup = new WaitGroup;
+            $waitGroup = new WaitGroup();
 
             foreach ($coroutines as $key => $callback) {
                 Coroutine::create(function () use ($key, $callback, $waitGroup, &$results): void {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Tests;
 
 use ArrayObject;
@@ -14,7 +16,7 @@ class EnsureRequestsDontExceedMaxExecutionTimeTest extends TestCase
     #[DoesNotPerformAssertions]
     public function test_process_is_killed_if_current_request_exceeds_max_execution_time()
     {
-        $table = new FakeTimerTable;
+        $table = new FakeTimerTable();
 
         $table['fake-worker-id'] = [
             'worker_pid' => 111,

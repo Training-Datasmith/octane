@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Exceptions;
 
 use Exception;
@@ -18,8 +20,12 @@ class TaskException extends Exception
     public function __construct(/**
      * The original throwable class name.
      */
-    protected $class, $message, $code, $file, $line)
-    {
+        protected $class,
+        $message,
+        $code,
+        $file,
+        $line
+    ) {
         parent::__construct($message, $code);
         $this->file = $file;
         $this->line = $line;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Commands\Concerns;
 
 use InvalidArgumentException;
@@ -70,8 +72,7 @@ trait InteractsWithServers
     protected function startServerWatcher()
     {
         if (! $this->option('watch')) {
-            return new class
-            {
+            return new class () {
                 public function __call(string $method, array $parameters)
                 {
                     return null;
@@ -86,7 +87,7 @@ trait InteractsWithServers
         }
 
         return tap(new Process([
-            (new ExecutableFinder)->find('node'),
+            (new ExecutableFinder())->find('node'),
             'file-watcher.cjs',
             json_encode(collect(config('octane.watch'))->map(fn ($path) => base_path($path))),
             $this->option('poll'),

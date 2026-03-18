@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane;
 
 use Illuminate\Http\Request;
@@ -55,7 +57,7 @@ trait MarshalsPsr7RequestsAndResponses
     protected function httpFoundationRequestFactory(): HttpFoundationFactoryInterface
     {
         return $this->httpFoundationFactory ?: (
-            $this->httpFoundationFactory = new HttpFoundationFactory
+            $this->httpFoundationFactory = new HttpFoundationFactory()
         );
     }
 
@@ -67,10 +69,10 @@ trait MarshalsPsr7RequestsAndResponses
     protected function psr7ResponseFactory(): HttpMessageFactoryInterface
     {
         return $this->psrHttpFactory ?: ($this->psrHttpFactory = new PsrHttpFactory(
-            new ServerRequestFactory,
-            new StreamFactory,
-            new UploadedFileFactory,
-            new ResponseFactory
+            new ServerRequestFactory(),
+            new StreamFactory(),
+            new UploadedFileFactory(),
+            new ResponseFactory()
         ));
     }
 }

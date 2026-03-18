@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Octane\Swoole;
 
 use Closure;
@@ -32,7 +34,7 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
      */
     public function resolve(array $tasks, int $waitMilliseconds = 3000): array
     {
-        $tasks = collect($tasks)->mapWithKeys(fn($task, $key) => [$key => $task instanceof Closure
+        $tasks = collect($tasks)->mapWithKeys(fn ($task, $key) => [$key => $task instanceof Closure
                         ? new SerializableClosure($task)
                         : $task, ])->all();
 
@@ -59,7 +61,7 @@ class SwooleHttpTaskDispatcher implements DispatchesTasks
      */
     public function dispatch(array $tasks): void
     {
-        $tasks = collect($tasks)->mapWithKeys(fn($task, $key) => [$key => $task instanceof Closure
+        $tasks = collect($tasks)->mapWithKeys(fn ($task, $key) => [$key => $task instanceof Closure
                         ? new SerializableClosure($task)
                         : $task, ])->all();
 

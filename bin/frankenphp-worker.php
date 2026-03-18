@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Laravel\Octane\ApplicationFactory;
 use Laravel\Octane\FrankenPhp\FrankenPhpClient;
 use Laravel\Octane\RequestContext;
@@ -31,7 +33,8 @@ $basePath = require __DIR__.'/bootstrap.php';
 $frankenPhpClient = new FrankenPhpClient();
 
 $worker = tap(new Worker(
-    new ApplicationFactory($basePath), $frankenPhpClient
+    new ApplicationFactory($basePath),
+    $frankenPhpClient
 ))->boot();
 
 $requestCount = 0;
