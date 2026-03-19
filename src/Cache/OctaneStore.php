@@ -41,7 +41,7 @@ class OctaneStore implements Store
         $record = $this->table->get($key);
 
         if (! $this->recordIsFalseOrExpired($record)) {
-            return unserialize($record['value']);
+            return unserialize($record['value'], ['allowed_classes' => true]);
         }
 
         if (in_array($key, $this->intervals) &&
@@ -59,7 +59,7 @@ class OctaneStore implements Store
     {
         $interval = $this->get('interval-'.$key);
 
-        return $interval ? unserialize($interval) : null;
+        return $interval ? unserialize($interval, ['allowed_classes' => true]) : null;
     }
 
     /**
@@ -117,7 +117,7 @@ class OctaneStore implements Store
             return tap($value, fn ($value) => $this->put($key, $value, static::ONE_YEAR));
         }
 
-        return tap((int) (unserialize($record['value']) + $value), function ($value) use ($key, $record): void {
+        return tap((int) (unserialize($record['value'], ['allowed_classes' => true]) + $value), function ($value) use ($key, $record): void {
             $this->put($key, $value, $record['expiration'] - Carbon::now()->getTimestamp());
         });
     }
